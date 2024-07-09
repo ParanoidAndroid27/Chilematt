@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(to right, #00792C, #00792C);
+}
+form {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    text-align: center;
+    padding: 20px 25px;
+    box-shadow: 0 5px 10px #158f59;
+}
+
+form .title {
+    color: #252525;
+    font-size: 35px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+form label {
+    margin-bottom: 35px;
+}
+form label .fa-solid {
+    font-size: 20px;
+    color: #158f59;
+    margin-right: 10px;
+}
+
+form label input {
+    outline: none;
+    border: none;
+    color: #252525;
+    border-bottom: solid 1px #158f59;
+    padding: 0 5px;
+    font-size: 18px;
+}
+
+form button {
+    color: #fff;
+    border: none;
+    background: linear-gradient(to right, #158f59, #158f59);
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+form label p{
+    color: #cb232c;
+    margin: 10px;
+}

@@ -1,0 +1,116 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Menu Historial{% endblock %}
+
+{% block content %}
+
+<!-- Mensaje -->
+<section class="page-section cta">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 mx-auto">
+        <div>
+          <div class="cta-inner text-center rounded">
+            <h2 class="section-heading mb-6"><span class="section-heading-upper">Historial de ventas realizadas</span></h2>
+          </div>
+          <div>
+            <form method="post" class="form-inline justify-content-center" action="{% url 'Filtrar_fecha' %}" style="padding: 15px;">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <h6>Fecha de compra</h6>
+                  <div class="input-group">
+                    <input type="date" class="form-control" name="query_fecha">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <h6>Nombre Cliente</h6>
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="query_nombre" placeholder="Nombre cliente">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <h6>&nbsp;</h6>
+                  <div class="input-group">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary btn-block" type="submit">Cargar Historial</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-xl-12 mx-auto">
+            <table class="table  table-success table-striped table-responsive">
+              <thead class="thead-dark">
+                  <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Codigo Venta</th>
+                      <th scope="col">Fecha de compra</th>
+                      <th scope="col">Productos</th>
+                      <th scope="col">Nombre Cliente</th>
+                      <th scope="col">Rut Cliente</th>
+                      <th scope="col" colspan="2">Opciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for vent in venta_historial %} {% comment %} este for no permite listar la base de datos {% endcomment %}
+                  <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{vent.venta.codigo_venta}}</td>
+                      <td>{{vent.venta.fecha_compra}}</td>
+                      <td>
+                        <ul>
+                          {% for detalle in vent.detalles %}
+                            <li>{{ detalle.producto }} ({{ detalle.cantidad }})</li>
+                          {% endfor %}
+                        </ul>
+                      </td>
+                      <td>{{vent.venta.cliente.nombre}}</td>
+                      <td>{{vent.venta.cliente_id}}</td>
+                      <td><a href="/editarVenta/{{vent.venta.codigo_venta}}"  class="btn btn-info">Editar</a></td> {% comment %} le definimos la edicion con el rut para poder identificarlo ya que es su clave primaria {% endcomment %}
+                      <td><a href="/eliminarVenta/{{vent.venta.codigo_venta}}" class="btn btn-danger btnEliminacion">Eliminar</a></td> {% comment %} lo mismo pero para eliminar {% endcomment %}
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  ul{
+    margin-left: -10%  
+  }
+  table{
+    height: 700px;
+  
+  }
+  table td:nth-child(6) {
+    width: 133px;
+  }
+  table td:nth-child(4) {
+    width: 325px;
+  }
+  </style>
+{% endblock %}
+
+<!-- <div class="cta-inner text-center rounded">
+  <h2 class="section-heading mb-4">
+    <span class="section-heading-upper"><h1>Menú Historial</h1></span>
+  </h2>
+  <div class="col-xl-9 mx-auto">
+    <a class="nav-link text-uppercase text-expanded" href="{% url 'historial_Compra' %}">Historial compra</a>
+    <a class="nav-link text-uppercase text-expanded" href="{% url 'ultima_Compra' %}">Última compra</a>
+  </div>
+</div> -->

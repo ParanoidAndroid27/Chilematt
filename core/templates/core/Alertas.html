@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Alertas{% endblock %}
+
+{% block content %}
+<section class="page-section cta">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 mx-auto">
+        <div class="cta-inner text-center rounded">
+          <h1 class="section-heading mb-4">
+            <span class="section-heading-upper">Control Supervisado de las Últimas Ventas Mayoristas</span>
+          </h1>
+          <p class="mb-0">Desarrollar servicios de excelencia junto a nuestros colaboradores y proveedores, para dar valor a nuestros ferreteros y sus clientes.</p>
+        </div>
+        <div>
+          <div class="cta-inner text-center rounded">
+            <h2 class="section-heading mb-6"><span class="section-heading-upper">Clientes en fuga</span></h2>
+            {% if message %}
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Listado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for messages in message %}
+                <tr {%if messages.1 >= 30 %}class="fila-roja" {% elif messages.1 <= 20 and messages.1 >= 14 %} class="fila-amarillo"  {% elif messages.1 < 30 and messages.1 > 20 %} class="fila-naranja" {% endif %}>
+                  <td>{{ messages.0 }} {{ messages.1 }} {{ messages.2 }} {{ messages.3 }} {{ messages.4 }} </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .fila-roja {
+    background-color: rgb(226, 124, 124);
+}
+
+.fila-amarillo {
+    background-color: rgb(241, 240, 143);
+}
+.fila-naranja {
+    background-color: rgb(238, 180, 94);
+}
+</style>
+
+{% endblock %}

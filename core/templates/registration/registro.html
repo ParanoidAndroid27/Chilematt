@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Registro</title>
+        {% load static %}
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <body>
+        <div>
+            <form method="post">
+                <h1 class="title">REGÍSTRATE CON NOSOTROS</h1>
+                {% csrf_token %}
+                <label for="id_username">
+                    {% if form.errors %}
+                    <p class="Usuario_Incorrecto">Por favor, corrija los errores en el formulario.</p>
+                    {% endif %}
+                    <i class="fa-sharp fa-solid fa-user"></i>
+                    <input placeholder="Nombre de usuario" type="text" name="username" id="id_username" required>
+                </label>
+                <label for="id_email">
+                    <i class="fa-sharp fa-solid fa-envelope"></i>
+                    <input placeholder="Correo electrónico" type="email" name="email" id="id_email" required>
+                </label>
+                <label for="id_password1">
+                    <i class="fa-sharp fa-solid fa-lock"></i>
+                    <input placeholder="Contraseña" type="password" name="password1" id="id_password1" required>
+                </label>
+                <label for="id_password2">
+                    <i class="fa-sharp fa-solid fa-lock"></i>
+                    <input placeholder="Confirmar contraseña" type="password" name="password2" id="id_password2" required>
+                </label>
+                <button type="submit">Regístrate</button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,129 @@
+
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Registar Cliente{% endblock %}
+
+{% block content %}
+<section class="page-section cta">
+<div class="container">
+  <div class="row">
+  <div class="col-xl-12">
+      <form action="{% url 'registrarCliente' %}" onsubmit="return validarFormularioRCliente()" method="POST" > 
+          {% csrf_token %}
+          <div class="form-group">
+              <label for="formGroupExampleInput">Rut Cliente</label>
+              <input type="text" class="form-control" id="txtRut" name="txtRut" placeholder="Rut Empresa" required>
+          </div>
+          <div class="form-group">
+              <label for="formGroupExampleInput2">Nombre Cliente</label>
+              <input type="text" class="form-control" id="txtNombre" name="txtNombre"  placeholder="Nombre Cliente" required>
+          </div>
+          <div class="form-group">
+              <label for="formGroupExampleInput2">Dirección</label>
+              <input type="text" class="form-control" id="txtDireccion" name="txtDireccion" placeholder="Dirección" required>
+          </div>
+          <div class="form-group">
+              <label for="formGroupExampleInput2">Email</label>
+              <input type="text" class="form-control" id="txtEmail" name="txtEmail"  placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2">Número de telefono</label>
+            <input type="text" class="form-control" id="txtNumero" name="txtNumero"  placeholder="Número de teléfono" required>
+        </div>
+          <button type="submit" class="btn btn-secondary btn-lg btn-block">Registrar Cliente</button>
+      </form>
+  </div>
+  <hr class="col-xl-12">
+  <div class="col-xl-12">
+    <form method="post" class="form-inline text-center" onsubmit="return validarBuscadores()" action="{% url 'search_results' %}" style="padding: 15px;">
+      {% csrf_token %}
+      <h6>Nombre Cliente</h6>
+      <div class="form-group mx-sm-3">
+        <input type="text" class="form-control" name="query_nombre" placeholder="Nombre cliente">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </div>
+      </div>
+      <h6>Rut Cliente</h6>
+      <div class="form-group mx-sm-3">
+        <input type="text" class="form-control" name="query_rut" placeholder="Rut Cliente">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </div>
+      </div>
+    </form>
+    
+
+    <div class="col-xl-12">
+      <form method="post" class="form-inline" action="{% url 'search_results' %}" style="padding: 15px;">
+        {% csrf_token %}
+        <div class="form-group mx-sm-3">
+          <input type="hidden" class="form-control" name="query_nombre"> 
+          <input type="hidden" class="form-control" name="query_rut"> 
+        </div>
+        <button type="submit" class="btn btn-secondary btn-lg btn-block">Cargar Lista de Clientes</button>
+      </form>
+    </div>
+    <table class="table table-responsive table-bordered">
+          <thead class="thead-dark">
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Rut</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Dirección</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Número</th>
+                  <th scope="col" colspan="2">Opciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for c in clientes_list %} {% comment %} este for no permite listar la base de datos {% endcomment %}
+              <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{c.rut}}</td>
+                  <td>{{c.nombre}}</td>
+                  <td>{{c.direccion}}</td>
+                  <td>{{c.email}}</td>
+                  <td>{{c.Numero}}</td>
+                  <!-- <td><button onclick="datosClientes/(c.rut)" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button></td> -->
+                  <td><a href="/datosClientes/{{c.rut}}"  class="btn btn-info">Editar</a></td> {% comment %} le definimos la edicion con el rut para poder identificarlo ya que es su clave primaria {% endcomment %}
+                  <td><a href="/eliminarCliente/{{c.rut}}" class="btn btn-danger btnEliminacion">Eliminar</a></td> {% comment %} lo mismo pero para eliminar {% endcomment %}
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+</div>
+</div>
+</section>
+<style>
+
+table{
+  height: 300px;
+  width: 300px;
+  
+}
+  table td:nth-child(2) {
+    width: 133px;
+  }
+  </style>
+
+
+<!-- Mensaje -->
+<!-- <section class="page-section cta">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="cta-inner text-center rounded">
+          <h2 class="section-heading mb-4">
+            <span class="section-heading-upper"><h1>Registar Cliente</h1></span>
+          </h2>
+          <p class="mb-0">Desarrollar servicios de excelencia junto a nuestros colaboradores y proveedores, para dar valor a nuestros ferreteros y sus clientes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+{% endblock %}

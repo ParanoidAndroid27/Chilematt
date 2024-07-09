@@ -1,0 +1,36 @@
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>login</title>
+        {%load static%}
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+    </head>
+    <body>
+        <div>
+            <form method="post"> 
+                <h1 class="title">INICIO DE SESIÓN</h1>
+                {% csrf_token %} 
+                <label from="usuario"> 
+                    {% if form.errors %}
+                    <p class="Usuario_Incorrecto">Usuario y/o Contraseña incorrectos</p>
+                    {% endif %}
+                    <i class="fa-sharp fa-solid fa-user"></i>
+                    <input placeholder="Nombre de usuario" {% if form.errors %} .placeholder="Usuario incorrecto" {% endif %} type="text" name="username">
+                </label>  
+                <label from="pass">
+                    <i class="fa-sharp fa-solid fa-lock"></i>
+                    <input placeholder="Contraseña" type="password" name="password">
+                </label>
+                <a href="{% url 'registro' %}" style="margin-bottom: 19px;">Regístrate con nosotros</a>    
+                <button type="submit">Inicio Sesión</p>    
+            </form>            
+        </div>
+        
+    </body>
+</html>

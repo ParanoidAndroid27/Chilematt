@@ -1,0 +1,24 @@
+.header_base{
+    background-color: #EDEDED;
+    }
+.linea {
+    border-top: 2px solid #545A60;
+    height: 2px;
+    padding: 0;
+    margin: 40px auto 0 auto;
+    margin-bottom: 40px;
+    overflow: auto;
+}
+.color_base{
+    background-color: #53595f;
+}
+table, th, td {
+    border: 1px solid;
+}
+table {
+    width: 100%;
+}
+.site-heading {
+    text-transform: uppercase;
+    font-family: 'Raleway';
+}

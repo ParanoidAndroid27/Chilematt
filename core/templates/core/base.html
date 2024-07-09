@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>{% block title %}{% endblock %} | Chilemat</title>
+
+  {% load static %}
+
+  <!-- Bootstrap -->
+  <link href="{% static 'core/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Fuentes -->
+  <link href="{% static 'core/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Estilos -->
+  <link href="{% static 'core/css/business-casual.css' %}" rel="stylesheet">
+  <link href="{% static 'core/css/clean-ch.css' %}" rel="stylesheet">
+
+</head>
+
+</head>
+
+<body>
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <img src=" {% static 'core/img/ch_mat.jpg' %}" style="width: 50%; height: auto;">
+  </div>
+  <h1 class="site-heading text-center text-white d-none d-lg-block"> Control de ventas Mayoristas</h1>
+
+  <!-- Navegación -->
+  <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none"
+        href="{% url 'home' %}">CHILEMAT</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav mx-auto">
+          <div class="icon-container">
+            <a class="material-icons" href="{% url 'Alerta' %}"
+              style="font-size:48px;color:rgb(255, 255, 255) ">add_alert</a>
+            <span id="counter">{{ contador }}</span>
+          </div>
+          <style>
+            .icon-container {
+              position: relative;
+              display: inline-block;
+            }
+
+            #counter {
+              position: absolute;
+              bottom: 4px;
+              right: 0;
+              background-color: red;
+              color: white;
+              border-radius: 100%;
+              padding: 4px;
+              font-size: 15px;
+            }
+          </style>
+          <li class="nav-item px-lg-4 {% if request.path == '/' %}active{% endif %}">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'home' %}">Inicio</a>
+          </li>
+          <li class="nav-item px-lg-4 {% if request.path == '/about/' %}active{% endif %}">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'menu_Historial' %}">Historial</a>
+          </li>
+          <li class="nav-item px-lg-4 {% if request.path == '/services/' %}active{% endif %}">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'registrar_Cliente' %}">Registrar Cliente</a>
+          </li>
+          <li class="nav-item px-lg-4 {% if request.path == '/store/' %}active{% endif %}">
+            <a class="nav-link text-uppercase text-expanded" data-toggle="modal" data-target="#myModal"
+              href="#">Registrar Venta</a>
+          </li>
+          <li class="nav-item px-lg-4 {% if request.path == '/store/' %}active{% endif %}">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'salir' %}">Cerrar Sesiòn</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div>
+    <div class="modal fade" id="myModal" role="dialog" style="width: 100%;"> <!-- inicio del pop up -->
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="text-center">
+            <h1>Registro de venta</h1>
+          </div>
+          <div class="modal-body">
+            <form id="Form_venta" action="guardarVenta/" method="POST">
+              {% csrf_token %}
+              <div class="form-group"> <!-- Codigo de la factura  -->
+                <label for="formGroupExampleInput">Codigo de la factura</label>
+                <input type="text" class="form-control" id="txtCodigo" name="txtCodigo" placeholder="Codigo factura"
+                  required>
+              </div>
+              <div class="form-group">
+                <label for="formGroupExampleInput2">Cliente</label>
+                <div id="miInput" style="display:none;">
+                  <input type="text" id="my-input">
+                </div>
+
+                <select data-live-search="true" id="my-select" name="txtCliente" class="selectcss" required>
+                  <option value="" selected disabled hidden>Seleccione una opción</option>
+                  <option value="input">Buscar cliente</option>
+                  {% for d in clientes_lista %}
+                  <option value="{{d}}">{{d}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="formGroupExampleInput2">Fecha</label>
+                <input type="date" class="form-control" id="datefecha" name="datefecha" required>
+              </div>
+              <div class="form-group" style="padding: 10px; margin-bottom: 10px;">
+                <div class="form-group row" id="producto1">
+                  <label for="producto1-select" class="col-3">Producto</label>
+                  <select name="producto1" id="producto1-select" class="form-control col-3.5">
+                    {% for producto in productos %}
+                    <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                    {% endfor %}
+                  </select>
+                  <label for="cantidad1" class="col-3">Cantidad</label>
+                  <input type="number" name="cantidad1" id="cantidad1" class="form-control col-3.5" required>
+                  <div style="padding-top: 8px;">
+                  </div>
+                </div>
+                <div id="productos-extra"></div>
+              </div>
+              <button type="button" class="btn btn-success btn-class" onclick="agregarProducto() ">Agregar
+                producto</button>
+              <div class="btn-class">
+                <button type="button" class="btn btn-secondary btn-lg btn-block button_alert"
+                onclick="descargarExcel(); return validarFormularioVenta(); ">Descargar Excel
+                <i class="fa-solid fa-file-excel fa-beat-fade fa-xl" style="color: #5ee868; margin-left: 15px;"></i>
+                </button>
+                <button type="submit" class="btn btn-secondary btn-lg btn-block button_alert"
+                onclick="return validarFormularioVenta()">Guardar Venta</button>
+                <!--  TBN <button type="button" class="btn btn-primary btn-class">Descargar Excel</button>  --> 
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% block content %} {% endblock %}
+
+    <!-- Pié de página -->
+    <footer class="footer text-faded text-center py-5">
+      <div class="container">
+        <p class="m-0">
+          {% if LINK_TWITTER %}
+          <a href="{{LINK_TWITTER}}" class="link">
+            <span class="fa-stack fa-lg">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+          {% endif %}
+          {% if LINK_FACEBOOK %}
+          <a href="{{LINK_FACEBOOK}}" class="link">
+            <span class="fa-stack fa-lg">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+          {% endif %}
+          {% if LINK_INSTAGRAM %}
+          <a href="{{LINK_INSTAGRAM}}" class="link">
+            <span class="fa-stack fa-lg">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+          {% endif %}
+        </p>
+        <p class="m-0 mbt1">&copy; 2023 Chilemat.cl. Todos los derechos reservados. Chilemat SPA</p>
+      </div>
+    </footer>
+
+    <style>
+      .selectcss {
+        font-size: 16px;
+        font-weight: 400;
+        color: #444;
+        line-height: 1.3;
+        padding: .4em 1.4em .3em .8em;
+        width: 99%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 5px auto;
+        border: 1px solid #aaa;
+        box-shadow: 0 1px 0 1px rgba(0, 0, 0, .03);
+        border-radius: .3em;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        background-color: #fff;
+      }
+
+      .btn-class {
+        margin: 10px auto;
+        width: 100%;
+      }
+    </style>
+    <!-- Bootstrap -->
+    <script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'core/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'core/js/select.js' %}"></script>
+    <script src="{% static 'core/js/validaSpace.js' %}"></script>
+    <script src="{% static 'core/js/validaVenta.js' %}"></script>
+    <script src="{% static 'core/js/validaFCliente.js' %}"></script>
+    <script src="{% static 'core/js/xlsx.js' %}"></script>
+    <script>
+      function descargarExcel() {
+        // ontener el formulario
+        event.preventDefault(); // Evita que se envíe el formulario por defecto
+        var form = document.getElementById('Form_venta');
+        if (form.checkValidity()) {
+          // Obtener los datos del formulario
+          const formData = new FormData(document.querySelector('form'));
+          const data = Object.fromEntries(formData.entries());
+
+          // Extraer los datos relevantes
+          const codigoFactura = data.txtCodigo;
+          const cliente = document.querySelector('select[name="txtCliente"]').value;
+          const fecha = data.datefecha;
+
+          // Crear el objeto workbook
+          const workbook = XLSX.utils.book_new();
+
+          // Crear el worksheet y asignar formato
+          const worksheet = XLSX.utils.aoa_to_sheet([
+            ["PLASTICOS EUROPLAST LTDA."],
+            ["RUT 79506670-5"],
+            ["Órden de compra  :", codigoFactura],
+            ["Fecha de pedido", fecha],
+            [],
+            ["No.", "DESCRIPCION", "CANTIDAD", "PRECIO UNITARIO", "PRECIO TOTAL"]
+          ]);
+          worksheet["!cols"] = [
+            { width: 25 }, // Columna A (A1)
+            { width: 52 },
+            { width: 9 },
+            { width: 15.70},
+            { width: 13 }     // Columna B (B1)
+          ];
+          // Combinar y centrar las celdas desde A1 hasta E1
+          worksheet["A1"].s = { alignment: { horizontal: "center" } };
+          worksheet["A1"].t = "s"; // Establecer el tipo de datos de la celda como string
+          worksheet["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }]; // A1:E1
+
+
+
+          // Obtener los nombres y cantidades de los productos seleccionados
+          const productosSeleccionados = document.querySelectorAll('select[name^="producto"]');
+          const cantidadesProductos = Array.from(document.querySelectorAll('input[name^="cantidad"]')).map(input => parseInt(input.value));
+          const nombresProductos = Array.from(productosSeleccionados).map(select => select.options[select.selectedIndex].text);
+
+          // Crear un arreglo con los datos de los productos
+          const datosProductos = nombresProductos.map((nombre, index) => [index + 1, nombre, cantidadesProductos[index], "", ""]);
+
+          // Agregar los datos de los productos al worksheet
+          XLSX.utils.sheet_add_aoa(worksheet, datosProductos, { origin: -1 });
+
+          // Agregar el worksheet al workbook
+          XLSX.utils.book_append_sheet(workbook, worksheet, 'Productos');
+
+          // Guardar el archivo Excel
+          const fechaArchivo = new Date().toISOString().slice(0, 10);
+          const nombreArchivo = `Factura, ${codigoFactura} Fecha ,${fechaArchivo}.xlsx`;
+          XLSX.writeFile(workbook, nombreArchivo);
+        } else {
+      // El formulario no es válido, puedes mostrar un mensaje de error o realizar alguna otra acción
+      console.log("Formulario inválido. No se ejecutará la función.");
+      }
+      }
+
+    </script>
+    <script>
+      let contador = 1;
+
+      function agregarProducto() {
+        const productoInput = document.getElementById(`producto${contador}-select`);
+        const cantidadInput = document.getElementById(`cantidad${contador}`);
+
+        // Verificar que los campos no estén vacíos
+        if (productoInput.value.trim() === '' || cantidadInput.value.trim() === '') {
+          alert('Debes ingresar un producto y una cantidad antes de agregar.');
+          return;
+        }
+
+        contador++;
+        const div = document.createElement("div");
+        div.classList.add("form-group", "row");
+        div.setAttribute("id", `producto${contador}`);
+        div.innerHTML = `
+          <label for="producto${contador}-select" class="col-3">Producto </label>
+          <select name="producto${contador}" id="producto${contador}-select" class="form-control col-3.5">
+              {% for producto in productos %}
+                  <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+              {% endfor %}
+          </select>
+          <label for="cantidad${contador}" class="col-3">Cantidad</label>
+          <input type="number" name="cantidad${contador}" id="cantidad${contador}" class="form-control col-3.5" required>
+          <button type="button" class="btn btn-danger btn-class" onclick="eliminarProducto(this)">Eliminar</button>
+      `;
+        const divProductos = document.getElementById("productos-extra");
+        divProductos.appendChild(div);
+      }
+
+      function eliminarProducto(boton) {
+        const divProducto = boton.parentNode;
+        divProducto.parentNode.removeChild(divProducto);
+      }
+    </script>
+
+
+
+    <!-- <script type="text/javascript">
+      $(document).ready(function(){
+        $('#txtCliente').select2();
+      });
+    </script> -->
+</body>
+
+</html>

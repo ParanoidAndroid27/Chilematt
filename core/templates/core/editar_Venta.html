@@ -1,0 +1,121 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Historial Compra{% endblock %}
+
+{% block content %}
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <table class="text-center" style="padding: 1rem; margin: 0.5rem;">
+                    <tr>
+                        <td>
+                            <h1>EDITAR VENTA</h1>
+                        </td>
+                    </tr>
+                </table>
+                <div class="cta-inner1 text-center rounded">
+                    <h6 class="section-heading mb-4">
+                        <span class="section-heading-upper">Importante</span>
+                        <p class="mb-0">Los campos "Código de Venta", "cliente" y "fecha de compra" están vinculados, por lo tanto, no se pueden editar.</p>
+                        <p class="mb-0">SE INSERTARON TRES NUEVOS CAMPOS PARA AGREGAR MÁS PRODUCTOS.</p>
+                    </h6>
+                </div>
+                <div class="">
+                    <form method="POST" class="form">
+                        {% csrf_token %}
+                        <table class="text-center" style="padding: 1rem; margin: 0.5rem;">
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="metete">
+                                            <div class="form-group">
+                                                <label for="{{ form.codigo_venta.id_for_label }}">Código de Venta :</label>
+                                                <input class="color-table-editar-venta" type="text" id="{{ form.codigo_venta.id_for_label }}"
+                                                    name="{{ form.codigo_venta.html_name }}" value="{{ form.codigo_venta.value }}"
+                                                    readonly>
+                                            </div>
+                                        </div>
+                                        <div class="metete">
+                                            <div class="form-group">
+                                                <label for="{{ form.cliente.id_for_label }}">Cliente :</label>
+                                                {{ form.cliente }}
+                                            </div>
+                                        </div>
+                                        <div class="metete">
+                                            <div class="form-group">
+                                                <label for="{{ form.fecha_compra.id_for_label }}">Fecha de Compra :</label>
+                                                {{ form.fecha_compra }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ formset.management_form }}
+                                    <div class="row">
+                                        {% for form in formset.forms %}
+                                        <div class="col-xs-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="table-responsive ">
+                                                    <table class="table color-border-table">
+                                                        {{ form.as_table }}
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <button type="submit" class="btn btn-secondary btn-lg btn-block">Guardar cambios</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .cta-inner1 {
+        position: relative;
+        margin: 2%;
+        background-color: rgba(215, 247, 140, 0.85);
+    }
+    .color-table-editar-venta{
+        background-color: #bfc3c7;
+    }
+    .metete {
+        position: relative;
+        margin-left: 3.6%;
+        margin-top: 2%;
+    }
+    .color-border-table{
+        border: 2.3px solid green;
+    }
+</style>
+<script>
+    var clienteField = document.getElementById("id_cliente");
+    clienteField.readOnly = true;
+    clienteField.style.pointerEvents = "none";
+    clienteField.classList.add("color-table-editar-venta")
+    
+</script>
+<script>
+    var fechacompra = document.getElementById("id_fecha_compra");
+    fechacompra.readOnly = true;
+    fechacompra.classList.add("color-table-editar-venta")
+</script>
+<script>
+    // seleccionar el div que deseas ocultar
+    const div = document.querySelector('.cta-inner1');
+
+    // programar la ocultación después de 10 segundos
+    setTimeout(function () {
+        div.style.display = 'none';
+    }, 15000);
+</script>
+
+
+{% endblock %}
